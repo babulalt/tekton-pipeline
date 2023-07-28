@@ -1,0 +1,63 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: ci-pipeline
+spec:
+  workspaces:
+    - name: workspace
+  tasks:
+    - name: git-clone
+      taskRef:
+        name: git-clone
+      params:
+        - name: url
+          value: https://github.com/Sugaml/one-time-secret.git
+        - name: revision
+          value: master
+        - name: sub_directory
+          value: ""
+      workspaces:
+        - name: workspace
+          workspace: workspace
+    - name: lint
+      taskRef:
+        name: lint
+      runAfter:
+        - git-clone
+      workspaces:
+        - name: workspace
+          workspace: workspace
+    - name: test
+      taskRef:
+        name: test
+      runAfter:
+        - git-clone
+      workspaces:
+        - name: workspace
+          workspace: workspace
+    - name: build
+      taskRef:
+        name: build
+      params:
+        - name: dockerfile
+          value: "FROM golang:1.18-alpine\nWORKDIR /app\nCOPY . /app\nRUN go build -o /app main.go\nCMD [\"/app/main\"]\n"
+        - name: dockerignore
+          value: ".git"
+        - name: docker_user
+          value: "sugamdocker35"
+        - name: docker_token
+          value: "<DOCKER_TOKEN/DOCKER_PASSWORD>"
+        - name: docker_service
+          value: "docker.io"
+        - name: base_image
+          value: golang
+        - name: base_tag
+          value: 1.16-alpine
+        - name: destination
+          value: sugamdocker35/secret-manager:tekton
+      runAfter:
+        - lint
+        - test
+      workspaces:
+        - name: workspace
+          workspace: workspace

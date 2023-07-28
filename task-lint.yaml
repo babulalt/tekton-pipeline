@@ -1,0 +1,16 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: lint
+spec:
+  workspaces:
+  - name: workspace
+  steps:
+    - name: lint
+      image: golangci/golangci-lint:latest
+      script: |
+        cd $(workspaces.workspace.path)
+        echo "Lint task start..."
+        golangci-lint run --timeout 10m0s ./...
+        echo "Lint completed"
+        sleep 1
