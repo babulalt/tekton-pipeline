@@ -1,4 +1,4 @@
-# Tekton CI For Golang
+# Tekton CI Pipeline Examples
 
 # Install Tekton Controller and CRD
 ```
