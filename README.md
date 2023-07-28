@@ -23,12 +23,12 @@ http://localhost:8001/api/v1/namespaces/tekton-pipelines/services/tekton-dashboa
 
 # Apply Pipeline 
 ```
-bash apply.sh
+bash apply.sh <NAMESPACE>
 
 ```
 
 # Destory Pipeline
 ```
-bash delete.sh
+bash delete.sh <NAMESPACE>
 
 ```
