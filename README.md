@@ -20,3 +20,15 @@ http://localhost:8001/api/v1/namespaces/tekton-pipelines/services/tekton-dashboa
 3. Test
 4. build
 5. push 
+
+# Apply Pipeline 
+```
+bash apply.sh
+
+```
+
+# Destory Pipeline
+```
+bash delete.sh
+
+```
